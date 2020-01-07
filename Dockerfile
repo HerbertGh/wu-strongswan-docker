@@ -21,8 +21,6 @@ RUN apk --update upgrade --no-cache && \
     gmp \
     gmp-dev && \
   echo -e "nameserver ${DNS_ADDR1}\nnameserver $DNS_ADDR2}" > /etc/resolv.conf && \
-  cat /etc/hosts | sed -e "s/$(hostname)/${HOSTNAME}/g" > /etc/hosts && \
-  echo "${HOSTNAME}" > /etc/hostname; hostname -F /etc/hostname && \
   wget https://download.strongswan.org/strongswan-${STRONGSWAN_VERSION}.tar.bz2 -O /tmp/strongswan.tar.bz2 && \
   mkdir -pv /tmp/strongswan && \
   tar xjvf /tmp/strongswan.tar.bz2 -C /tmp/strongswan --strip-components=1 && \

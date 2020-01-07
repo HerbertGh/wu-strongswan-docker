@@ -1,0 +1,33 @@
+version: "3"
+services:
+  strongswan-ikev2_1:
+    build: .
+    container_name: strongswan-ikev2_1
+    cap_add:
+      - NET_ADMIN
+    #user: root
+    ports:
+      - ${IKE_PORT}:500/udp
+      - ${IPSEC_PORT}:4500/udp
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv6.conf.all.forwarding=1
+      # - net.ipv6.conf.eth0.proxy_ndp=1
+    environment:
+      - STRONGSWAN_VERSION=${STRONGSWAN_VERSION}
+      - DNS_ADDR1=${DNS_ADDR1}
+      - DNS_ADDR2=${DNS_ADDR2}
+      - RIGHT_SRC_IP=${RIGHT_SRC_IP}
+      - VPN_FQDN=${VPN_FQDN}
+      - CERT_EMAIL=${CERT_EMAIL}
+      - CERT_ORG=${CERT_ORG}
+      - HOSTNAME=${HOSTNAME}
+      - CERT_EXPORT_PASS=${CERT_EXPORT_PASS}
+    volumes:
+      - /lib/modules:/lib/modules
+      - /etc/localtime:/etc/localtime
+      - ./config:/config
+      - ./config/ipsec.conf:/etc/ipsec.conf
+      - ./config/ipsec.secrets:/etc/ipsec.secrets
+      - ./config/ipsec.d:/etc/ipsec.d
+    restart: always

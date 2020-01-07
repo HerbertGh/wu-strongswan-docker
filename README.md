@@ -3,7 +3,6 @@
 This is a docker image to help build/deploy [StrongSwan](https://strongswan.org/) IKEv2 (RSA) Tunnel VPN on [Alpine](https://alpinelinux.org/) image.
 
 ## Usage
----
 Before starting the container you need to have following file on below structure:
 * .env
 * config/

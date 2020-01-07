@@ -3,7 +3,43 @@
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 source "${SCRIPT_DIR}/.env"
 mkdir -pv "${SCRIPT_DIR}/config"
-mkdir -pv "${SCRIPT_DIR}/config/ipsec.d"
-docker run -it --rm=true -v ${SCRIPT_DIR}/config:/config -v ${SCRIPT_DIR}/config/ipsec.d:/etc/ipsec.d -v ${SCRIPT_DIR}/__gc.sh:/__gc.sh  -v ${SCRIPT_DIR}/.env:/.env alpine sh /__gc.sh
+
+echo 'config setup
+  charondebug="ike 1, knl 1, cfg 0"
+  uniqueids=never
+
+conn ikev2
+    auto=add
+    compress=no
+    type=tunnel
+    keyexchange=ikev2
+    fragmentation=yes
+    forceencaps=yes
+    ike=aes256gcm16-sha384-modp3072!
+    esp=aes256gcm16-sha384-modp3072!
+    dpdaction=clear
+    dpddelay=300s
+    rekey=no
+    left=%any
+    leftid=moon@strongswan.org
+    leftcert=vpn-server.crt
+    leftsendcert=always
+    leftsubnet=0.0.0.0/0
+    right=%any
+    rightid=%any
+    rightauth=eap-tls
+    rightdns=1.1.1.1,1.0.0.1
+    rightsourceip=10.0.2.0/24
+    rightsendcert=never
+    eap_identity=%identity' \
+  | sed "s/moon@strongswan.org/${VPN_FQDN}/g" \
+  | sed "s/1.1.1.1/${DNS_ADDR1}/g" \
+  | sed "s/1.0.0.1/${DNS_ADDR2}/g" \
+  | awk "{gsub(\"10.0.2.0/24\",\"${RIGHT_SRC_IP}\"); print}" > "${SCRIPT_DIR}/config/ipsec.conf"
+echo ': RSA vpn-server.key' > "${SCRIPT_DIR}/config/ipsec.secrets"
+echo 'libtls {
+  suites = TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+}' > "${SCRIPT_DIR}/config/strongswan.conf"
+
 
 

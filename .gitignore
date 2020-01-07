@@ -1,3 +1,4 @@
 .env
 TEMP.txt
 config/**
+docker-compose.wu.yml

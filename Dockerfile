@@ -26,7 +26,7 @@ RUN apk --update upgrade --no-cache && \
   tar xjvf /tmp/strongswan.tar.bz2 -C /tmp/strongswan --strip-components=1 && \
   rm -v /tmp/strongswan.tar.bz2 && \
   cd /tmp/strongswan && \
-  ./configure --prefix=/usr --sysconfdir=/etc \
+  ./configure --prefix=/usr --sysconfdir=/usr/etc \
     --libexecdir=/usr/lib \
     --with-ipsecdir=/usr/lib/strongswan \
     --enable-aesni \
@@ -64,7 +64,7 @@ RUN apk --update upgrade --no-cache && \
     --enable-eap-tnc \
     --enable-xauth-eap && \
     make -j && \
-    #make install && \
+    make install && \
     cd ~ && \
     rm -rf /tmp/strongswan/ && \
     apk del build-base curl-dev openssl-dev iptables-dev gmp-dev && \

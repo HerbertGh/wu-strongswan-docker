@@ -6,8 +6,8 @@ ENV DNS_ADDR1            1.1.1.1
 ENV DNS_ADDR2            1.0.0.1
 ENV STRONGSWAN_VERSION   5.8.2
 ENV HOSTNAME             vpn-ikev2
-
-RUN sudo mount -o remount,rw /
+RUN df
+RUN mount -o remount,rw /
 RUN apk --update upgrade --no-cache && \
   apk --update add --no-cache --virtual .build-deps build-base \
     ca-certificates \

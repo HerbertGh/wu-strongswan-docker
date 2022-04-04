@@ -11,8 +11,8 @@ RUN df
 #RUN lsattr /etc/resolv.conf
 #RUN chattr -i /etc/resolv.conf
 #RUN chmod +w /etc/resolv.conf
-RUN apk --update upgrade --no-cache && \
-  apk --update add --no-cache --virtual .build-deps build-base \
+RUN apt-get --update upgrade --no-cache && \
+  apt-get --update add --no-cache --virtual .build-deps build-base \
     ca-certificates \
     curl \
     curl-dev \
@@ -29,7 +29,7 @@ RUN apk --update upgrade --no-cache && \
   tar xjvf /tmp/strongswan.tar.bz2 -C /tmp/strongswan --strip-components=1 && \
   rm -v /tmp/strongswan.tar.bz2 && \
   cd /tmp/strongswan && \
-  ./configure --prefix=/usr --sysconfdir=/usr/etc \
+  ./configure --prefix=/usr --sysconfdir=/etc \
     --libexecdir=/usr/lib \
     --with-ipsecdir=/usr/lib/strongswan \
     --enable-aesni \

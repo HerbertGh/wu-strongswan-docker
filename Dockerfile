@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM ubuntu:20.04 as system
 
 MAINTAINER WUAmin <wuamin@gmail.com>
 
@@ -9,8 +9,8 @@ ENV HOSTNAME             vpn-ikev2
 RUN df
 #RUN mount -o remount,rw /
 #RUN lsattr /etc/resolv.conf
-RUN chattr -i /etc/resolv.conf
-RUN chmod +w /etc/resolv.conf
+#RUN chattr -i /etc/resolv.conf
+#RUN chmod +w /etc/resolv.conf
 RUN apk --update upgrade --no-cache && \
   apk --update add --no-cache --virtual .build-deps build-base \
     ca-certificates \
